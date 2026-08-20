@@ -1,5 +1,5 @@
 {
-    "name": "arghavan/user-roles",
+    "name": "arghavan/user-role",
     "version": "1.2",
     "description": "defining roles of users and accessibility of each role. it can use codes in views and controllers.",
     "autoload": {
