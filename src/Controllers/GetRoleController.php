@@ -11,8 +11,8 @@ use BehinUserRoles\Models\Role;
 
 class GetRoleController extends Controller
 {
-    public static function hasNotAccess(){
-        $access = new AccessController('User Roles');
+    public static function hasNotAccess($method = 'User Roles'){
+        $access = new AccessController($method);
         if($access->check()){
             return false;
         }
@@ -93,6 +93,31 @@ class GetRoleController extends Controller
     }
     
 
+
+    public function delete($id)
+    {
+        $role = self::getById($id);
+        if (!$role) {
+            abort(404, 'Role not found');
+        }
+
+        $users = User::where('role_id', $role->id)->get();
+        if ($users->isNotEmpty()) {
+            $userNames = $users->map(function ($user) {
+                return trim($user->name . ($user->email ? ' (' . $user->email . ')' : ''));
+            })->filter()->values()->all();
+
+            return redirect()->back()->with([
+                'error' => 'امکان حذف نقش وجود ندارد به دلیل اینکه کاربر یا کاربران زیر در حال حاضر این نقش را دارند.',
+                'users_with_role' => $userNames,
+            ]);
+        }
+
+        Access::where('role_id', $role->id)->delete();
+        $role->delete();
+
+        return redirect()->route('role.listForm')->with('success', 'نقش با موفقیت حذف شد.');
+    }
 
     public static function copy($id){
         $role = self::getById($id);

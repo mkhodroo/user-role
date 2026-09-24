@@ -3,6 +3,23 @@
 @section('content')
     <div class="box">
         <div class="card">
+            @if (session('success'))
+                <div class="alert alert-success m-3">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger m-3">
+                    {{ session('error') }}
+                    @if (session('users_with_role'))
+                        <ul class="mb-0 mt-2">
+                            @foreach (session('users_with_role') as $userWithRole)
+                                <li>{{ $userWithRole }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            @endif
             <table class="table table-stripped" id="role-table">
                 <thead>
                     <tr>
@@ -23,6 +40,16 @@
                                         class="fa fa-edit"></i></a>
                                 <a class="btn btn-sm btn-info" href="{{ route('role.copy', $role->id) }}"><i
                                         class="fa fa-copy"></i></a>
+                                @if (access('حذف نقش'))
+                                    <form action="{{ route('role.delete', $role->id) }}" method="POST" class="d-inline"
+                                        onsubmit="return confirm(@json('آیا از حذف نقش «' . $role->name . '» مطمئن هستید؟'))">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -12,6 +12,7 @@ Route::name('role.')->prefix('role')->middleware(['web', 'auth'])->group(functio
     Route::get('list', [GetRoleController::class, 'list'])->name('list');
     Route::get('show/{id}', [GetRoleController::class, 'show'])->name('show');
     Route::get('copy/{id}', [GetRoleController::class, 'copy'])->name('copy');
+    Route::delete('delete/{id}', [GetRoleController::class, 'delete'])->name('delete')->middleware('access:حذف نقش');
     Route::post('get', [GetRoleController::class, 'get'])->name('get');
     Route::post('edit', [GetRoleController::class, 'edit'])->name('edit');
     Route::put('change-user-role', [GetRoleController::class, 'changeUserRole'])->name('changeUserRole');

@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class UserRolesServiceProvider extends ServiceProvider
 {
     public function register() {
-        
+        require_once __DIR__ . '/Helper/helper.php';
     }
 
     public function boot() {
